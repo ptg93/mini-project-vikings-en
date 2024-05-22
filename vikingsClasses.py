@@ -24,7 +24,7 @@ class Viking(Soldier):
         return "Odin Owns You All!"
 
     def receiveDamage(self, damage):
-        self.health = self.health - damage
+        super().receiveDamage(damage)
         if self.health > 0:
             return f"{self.name} has received {damage} points of damage"
         else:
@@ -37,7 +37,7 @@ class Saxon(Soldier):
         super().__init__(health, strength)
 
     def receiveDamage(self, damage):
-        self.health = self.health - damage
+        super().receiveDamage(damage)
         if self.health > 0:
             return f"A Saxon has received {damage} points of damage"
         else:
@@ -55,12 +55,14 @@ class War():
         self.saxonArmy.append(saxon)
     
     def vikingAttack(self):
-        random.choice(self.saxonArmy).receiveDamage(random.choice(self.vikingArmy).strength)
+        result = random.choice(self.saxonArmy).receiveDamage(random.choice(self.vikingArmy).strength)
         self.saxonArmy[:] = [saxon for saxon in self.saxonArmy if saxon.health > 0]
+        return result
         
     def saxonAttack(self):
-        random.choice(self.vikingArmy).receiveDamage(random.choice(self.saxonArmy).strength)
+        result = random.choice(self.vikingArmy).receiveDamage(random.choice(self.saxonArmy).strength)
         self.vikingArmy[:] = [viking for viking in self.vikingArmy if viking.health > 0]
+        return result
 
     def showStatus(self):
         if not self.vikingArmy:
